@@ -2,10 +2,5 @@ spring:
   application:
     name: KBase Backend
 
-# Disable datasource autoconfiguration for quick local ping tests (no DB required)
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-
 server:
   port: 8080
