@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: kbase-postgres
+    environment:
+      POSTGRES_DB: kbase
+      POSTGRES_USER: kbase_user
+      POSTGRES_PASSWORD: kbase_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - kbase-network
+
+  backend:
+    build: ../backend
+    container_name: kbase-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres
+    networks:
+      - kbase-network
+
+  frontend:
+    build: ../frontend
+    container_name: kbase-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - kbase-network
+
+volumes:
+  postgres_data:
+
+networks:
+  kbase-network:
+    driver: bridge
