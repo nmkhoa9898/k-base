@@ -9,12 +9,12 @@ import {
 export const authService = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
     const response = await api.post<ApiResponse<AuthResponse>>('/auth/login', data);
-    return response.data.data;
+    return response.data.result;
   },
 
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
     const response = await api.post<ApiResponse<AuthResponse>>('/auth/register', data);
-    return response.data.data;
+    return response.data.result;
   },
 
   logout: (): void => {

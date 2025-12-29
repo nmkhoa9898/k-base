@@ -38,7 +38,7 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-  token: string;
+  accessToken: string;
   tokenType: string;
   expiresIn: number;
   user: User;
@@ -114,14 +114,14 @@ export interface UpdateDocumentRequest {
 
 // API Response types
 export interface ApiResponse<T> {
-  success: boolean;
+  status: number;
   message: string;
-  data: T;
+  result: T;
   timestamp: string;
 }
 
 export interface PagedResponse<T> {
-  success: boolean;
+  status: number;
   message: string;
   data: T[];
   page: PageMetadata;

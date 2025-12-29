@@ -1,0 +1,16 @@
+{
+  "sample": {
+    "projectId": 1,
+    "projectName": "Test Project",
+    "description": "A sample project for testing",
+    "ownerId": 1,
+    "ownerName": "John Smith",
+    "isActive": true,
+    "createdAt": "2025-01-01T00:00:00Z",
+    "updatedAt": "2025-01-01T00:00:00Z"
+  },
+  "newProject": {
+    "projectName": "New Test Project",
+    "description": "Created via Cypress test"
+  }
+}

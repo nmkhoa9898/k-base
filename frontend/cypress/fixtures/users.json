@@ -1,0 +1,20 @@
+{
+  "admin": {
+    "email": "admin@kbase.dev",
+    "password": "Password123!",
+    "fullName": "System Administrator",
+    "role": "ADMIN"
+  },
+  "owner": {
+    "email": "john.smith@techcorp.com",
+    "password": "Password123!",
+    "fullName": "John Smith",
+    "role": "OWNER"
+  },
+  "user": {
+    "email": "alice.taylor@techcorp.com",
+    "password": "Password123!",
+    "fullName": "Alice Taylor",
+    "role": "USER"
+  }
+}

@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const saveAuthData = (response: AuthResponse) => {
-    localStorage.setItem('token', response.token);
+    localStorage.setItem('token', response.accessToken);
     localStorage.setItem('user', JSON.stringify(response.user));
     setUser(response.user);
   };

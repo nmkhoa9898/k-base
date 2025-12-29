@@ -1,0 +1,21 @@
+{
+  "sample": {
+    "documentId": 1,
+    "projectId": 1,
+    "title": "Sample Document",
+    "fileName": "sample.pdf",
+    "fileType": "pdf",
+    "fileSize": 1024,
+    "storagePath": "/files/sample.pdf",
+    "mimeType": "application/pdf",
+    "description": "A sample document for testing",
+    "uploadedByName": "John Smith",
+    "isActive": true,
+    "createdAt": "2025-01-01T00:00:00Z",
+    "updatedAt": "2025-01-01T00:00:00Z"
+  },
+  "newDocument": {
+    "title": "New Test Document",
+    "description": "Uploaded via Cypress test"
+  }
+}

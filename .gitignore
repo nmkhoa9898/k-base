@@ -156,3 +156,6 @@ target/
 
 # Docker
 .dockerignore
+
+#Cypress screenshots
+frontend/cypress/screenshots
