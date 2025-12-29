@@ -82,7 +82,7 @@ const UploadDocumentPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await documentService.upload({
+      await documentService.create({
         title: formData.title,
         description: formData.description || undefined,
         projectId: Number(projectId),

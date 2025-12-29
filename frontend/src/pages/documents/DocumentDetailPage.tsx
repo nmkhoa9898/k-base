@@ -37,20 +37,8 @@ const DocumentDetailPage: React.FC = () => {
 
   const handleDownload = async () => {
     if (!document) return;
-
-    try {
-      const blob = await documentService.download(document.documentId);
-      const url = window.URL.createObjectURL(blob);
-      const a = window.document.createElement('a');
-      a.href = url;
-      a.download = document.title;
-      window.document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      window.document.body.removeChild(a);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Download failed');
-    }
+    // Note: Download endpoint not available in backend yet
+    setError('Document download is not yet implemented');
   };
 
   const handleDelete = async () => {

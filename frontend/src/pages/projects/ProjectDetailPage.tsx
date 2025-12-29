@@ -242,13 +242,13 @@ const ProjectDetailPage: React.FC = () => {
                 >
                   <div className="flex items-center">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 font-semibold">
-                      {member.fullName.charAt(0).toUpperCase()}
+                      {member.userFullName?.charAt(0).toUpperCase() || '?'}
                     </div>
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-900">
-                        {member.fullName}
+                        {member.userFullName}
                       </p>
-                      <p className="text-xs text-gray-500">{member.email}</p>
+                      <p className="text-xs text-gray-500">{member.userEmail}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

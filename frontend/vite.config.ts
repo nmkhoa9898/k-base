@@ -11,6 +11,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    // Disable minification for easier debugging
+    minify: false,
+    // Generate source maps
+    sourcemap: true,
+    // Don't split chunks for easier debugging
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
   server: {
     port: 3000,
     proxy: {

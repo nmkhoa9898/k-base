@@ -89,6 +89,17 @@ public class ProjectService {
     }
     
     /**
+     * Get projects for a user by their email (as owner or member).
+     */
+    @Transactional(readOnly = true)
+    public Page<ProjectDTO> findByUserEmail(String email, Pageable pageable) {
+        log.debug("Fetching projects for user email: {}", email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+        return projectRepository.findProjectsByMemberId(user.getUserId(), pageable).map(this::convertToDTO);
+    }
+    
+    /**
      * Get projects where user is a member.
      */
     @Transactional(readOnly = true)

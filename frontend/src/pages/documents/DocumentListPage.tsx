@@ -37,11 +37,17 @@ const DocumentListPage: React.FC = () => {
       return;
     }
 
+    // Note: Global document search is not available - filter locally for now
     try {
       setIsLoading(true);
-      const response = await documentService.search(searchQuery, 0, 20);
-      setDocuments(response.data);
-      setTotalPages(response.page.totalPages);
+      const response = await documentService.getAll(0, 100);
+      const filtered = response.data.filter(doc => 
+        doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        doc.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        doc.fileName?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setDocuments(filtered);
+      setTotalPages(1);
       setCurrentPage(0);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Search failed');
@@ -51,19 +57,8 @@ const DocumentListPage: React.FC = () => {
   };
 
   const handleDownload = async (doc: Document) => {
-    try {
-      const blob = await documentService.download(doc.documentId);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = doc.title;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Download failed');
-    }
+    // Note: Download endpoint not available in backend yet
+    setError('Document download is not yet implemented');
   };
 
   const getFileIcon = (_fileType: string) => {

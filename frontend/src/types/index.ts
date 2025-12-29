@@ -51,6 +51,7 @@ export interface Project {
   description: string;
   ownerId: number;
   ownerName: string;
+  ownerEmail?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -61,6 +62,7 @@ export interface Project {
 export interface CreateProjectRequest {
   projectName: string;
   description?: string;
+  ownerId: number;
 }
 
 export interface UpdateProjectRequest {
@@ -68,11 +70,14 @@ export interface UpdateProjectRequest {
   description?: string;
 }
 
+// Backend uses different field names for ProjectMember
 export interface ProjectMember {
+  projectId?: number;
   userId: number;
-  email: string;
-  fullName: string;
+  userEmail: string;
+  userFullName: string;
   role: MemberRole;
+  isActive?: boolean;
   joinedAt: string;
 }
 
@@ -83,18 +88,19 @@ export interface AddMemberRequest {
   role?: MemberRole;
 }
 
-// Document types
+// Document types - match backend DocumentDTO
 export interface Document {
   documentId: number;
-  title: string;
-  description: string;
-  filePath: string;
-  fileType: string;
-  fileSize: number;
   projectId: number;
   projectName: string;
   uploadedById: number;
   uploadedByName: string;
+  title: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  mimeType: string;
+  description: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -128,9 +134,10 @@ export interface PagedResponse<T> {
   timestamp: string;
 }
 
+// Backend PageMetadata uses 'page' and 'size', not 'currentPage' and 'pageSize'
 export interface PageMetadata {
-  currentPage: number;
-  pageSize: number;
+  page: number;
+  size: number;
   totalElements: number;
   totalPages: number;
   first: boolean;

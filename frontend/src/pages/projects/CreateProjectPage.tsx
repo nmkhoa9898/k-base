@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { projectService } from '@/services';
+import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Alert } from '@/components/ui';
 
 const CreateProjectPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     projectName: '',
     description: '',
@@ -26,12 +28,18 @@ const CreateProjectPage: React.FC = () => {
       return;
     }
 
+    if (!user) {
+      setError('You must be logged in to create a project');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       const project = await projectService.create({
         projectName: formData.projectName,
         description: formData.description || undefined,
+        ownerId: user.userId,
       });
       navigate(`/projects/${project.projectId}`);
     } catch (err) {

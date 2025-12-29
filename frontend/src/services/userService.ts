@@ -37,10 +37,7 @@ export const userService = {
     return response.data.result;
   },
 
-  getByEmail: async (email: string): Promise<User> => {
-    const response = await api.get<ApiResponse<User>>(`/users/email/${email}`);
-    return response.data.result;
-  },
+  // Note: getByEmail endpoint doesn't exist in backend - removed
 
   create: async (data: CreateUserRequest): Promise<User> => {
     const response = await api.post<ApiResponse<User>>('/users', data);
@@ -56,9 +53,7 @@ export const userService = {
     await api.delete(`/users/${id}`);
   },
 
-  changePassword: async (id: number, oldPassword: string, newPassword: string): Promise<void> => {
-    await api.put(`/users/${id}/password`, { oldPassword, newPassword });
-  },
+  // Note: changePassword endpoint doesn't exist in backend - removed
 };
 
 export default userService;

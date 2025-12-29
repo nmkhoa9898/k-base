@@ -36,6 +36,34 @@ public class ProjectController {
     private final ProjectService projectService;
     
     /**
+     * Get projects for the current authenticated user (as owner or member).
+     */
+    @GetMapping("/my")
+    @Operation(summary = "Get my projects", description = "Retrieve all projects where the current user is owner or member")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Projects retrieved successfully"
+            )
+    })
+    public ResponseEntity<ApiResponse<List<ProjectDTO>>> getMyProjects(
+            @Parameter(description = "Page number (0-indexed)") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size") @RequestParam(defaultValue = "20") int size,
+            @Parameter(description = "Sort by field") @RequestParam(defaultValue = "createdAt") String sortBy,
+            @Parameter(description = "Sort direction") @RequestParam(defaultValue = "desc") String sortDir,
+            @org.springframework.security.core.annotation.AuthenticationPrincipal 
+            org.springframework.security.core.userdetails.UserDetails userDetails) {
+        
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        
+        Page<ProjectDTO> projectPage = projectService.findByUserEmail(userDetails.getUsername(), pageable);
+        PageMetadata metadata = projectService.createPageMetadata(projectPage);
+        
+        return ResponseEntity.ok(ApiResponse.success("My projects retrieved successfully", projectPage.getContent(), metadata));
+    }
+    
+    /**
      * Get all projects with optional pagination.
      */
     @GetMapping

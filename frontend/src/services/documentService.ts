@@ -48,14 +48,16 @@ export const documentService = {
     return toPagedResponse(response.data);
   },
 
-  search: async (query: string, page = 0, size = 10): Promise<PagedResponse<Document>> => {
-    const response = await api.get<PagedListResponse<Document>>('/documents/search', {
-      params: { query, page, size },
+  // Backend has /documents/project/{projectId}/search with 'q' param
+  searchInProject: async (projectId: number, query: string, page = 0, size = 10): Promise<PagedResponse<Document>> => {
+    const response = await api.get<PagedListResponse<Document>>(`/documents/project/${projectId}/search`, {
+      params: { q: query, page, size },
     });
     return toPagedResponse(response.data);
   },
 
-  upload: async (data: CreateDocumentRequest): Promise<Document> => {
+  // Backend uses POST /documents (not /documents/upload)
+  create: async (data: CreateDocumentRequest): Promise<Document> => {
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('projectId', data.projectId.toString());
@@ -64,7 +66,7 @@ export const documentService = {
       formData.append('description', data.description);
     }
 
-    const response = await api.post<ApiResponse<Document>>('/documents/upload', formData, {
+    const response = await api.post<ApiResponse<Document>>('/documents', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -81,12 +83,7 @@ export const documentService = {
     await api.delete(`/documents/${id}`);
   },
 
-  download: async (id: number): Promise<Blob> => {
-    const response = await api.get(`/documents/${id}/download`, {
-      responseType: 'blob',
-    });
-    return response.data;
-  },
+  // Note: download endpoint doesn't exist in backend yet
 };
 
 export default documentService;

@@ -50,9 +50,10 @@ export const projectService = {
     return toPagedResponse(response.data);
   },
 
+  // Backend uses 'q' parameter, not 'query'
   search: async (query: string, page = 0, size = 10): Promise<PagedResponse<Project>> => {
     const response = await api.get<PagedListResponse<Project>>('/projects/search', {
-      params: { query, page, size },
+      params: { q: query, page, size },
     });
     return toPagedResponse(response.data);
   },
@@ -86,13 +87,7 @@ export const projectService = {
     await api.delete(`/projects/${projectId}/members/${userId}`);
   },
 
-  updateMemberRole: async (projectId: number, userId: number, role: string): Promise<ProjectMember> => {
-    const response = await api.put<ApiResponse<ProjectMember>>(
-      `/projects/${projectId}/members/${userId}`,
-      { role }
-    );
-    return response.data.result;
-  },
+  // Note: updateMemberRole endpoint doesn't exist in backend - removed
 };
 
 export default projectService;
