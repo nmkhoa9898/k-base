@@ -1,18 +1,38 @@
+# Local PostgreSQL Configuration
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/kbase
     username: kbase_user
     password: kbase_password
+    driver-class-name: org.postgresql.Driver
+  
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  
+  # Disable H2 console for PostgreSQL profile
+  h2:
+    console:
+      enabled: false
 
 server:
   port: 8080
 
+# JWT Configuration
+app:
+  jwt:
+    secret: dGhpc2lzYXZlcnlsb25nc2VjcmV0a2V5Zm9yand0dG9rZW5nZW5lcmF0aW9uYW5kaXRzaG91bGRiZWF0bGVhc3QyNTZiaXRz
+    expiration-ms: 86400000
+
+# Logging configuration
 logging:
   level:
-    org.springframework: INFO
+    root: INFO
+    com.example.kbase_backend: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG

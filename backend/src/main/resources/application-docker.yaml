@@ -1,0 +1,44 @@
+# Docker Profile Configuration
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/kbase
+    username: kbase_user
+    password: kbase_password
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+  
+  h2:
+    console:
+      enabled: false
+
+server:
+  port: 8080
+
+# JWT Configuration
+app:
+  jwt:
+    # In production, use environment variable: ${JWT_SECRET}
+    secret: ${JWT_SECRET:dGhpc2lzYXZlcnlsb25nc2VjcmV0a2V5Zm9yand0dG9rZW5nZW5lcmF0aW9uYW5kaXRzaG91bGRiZWF0bGVhc3QyNTZiaXRz}
+    expiration-ms: ${JWT_EXPIRATION:86400000}
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.example.kbase_backend: INFO
+    org.springframework.security: WARN
+
+# OpenAPI/Swagger - enable in docker for testing
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
