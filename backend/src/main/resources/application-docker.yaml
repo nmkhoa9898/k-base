@@ -1,18 +1,18 @@
 # Docker Profile Configuration
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/kbase
-    username: kbase_user
-    password: kbase_password
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/kbase}
+    username: ${SPRING_DATASOURCE_USERNAME:kbase_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:kbase_password}
     driver-class-name: org.postgresql.Driver
   
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
         format_sql: false
   
   h2:

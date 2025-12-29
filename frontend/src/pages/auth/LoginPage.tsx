@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts';
 import { Button, Input, Alert } from '@/components/ui';
+import { Info } from 'lucide-react';
+
+// Test accounts for development - all use password: Password123!
+const TEST_ACCOUNTS = [
+  { role: 'ADMIN', email: 'admin@kbase.dev', description: 'Full system access' },
+  { role: 'OWNER', email: 'john.smith@techcorp.com', description: 'Project owner access' },
+  { role: 'USER', email: 'alice.taylor@techcorp.com', description: 'Regular user access' },
+];
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -31,6 +39,11 @@ const LoginPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const fillTestAccount = (testEmail: string) => {
+    setEmail(testEmail);
+    setPassword('Password123!');
   };
 
   return (
@@ -104,6 +117,37 @@ const LoginPage: React.FC = () => {
             Sign up
           </Link>
         </p>
+      </div>
+
+      {/* Test Accounts Panel */}
+      <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="flex items-center gap-2 mb-3">
+          <Info className="h-5 w-5 text-blue-600" />
+          <h3 className="text-sm font-semibold text-blue-900">Test Accounts</h3>
+        </div>
+        <p className="text-xs text-blue-700 mb-3">
+          Password for all accounts: <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono">Password123!</code>
+        </p>
+        <div className="space-y-2">
+          {TEST_ACCOUNTS.map((account) => (
+            <button
+              key={account.email}
+              type="button"
+              onClick={() => fillTestAccount(account.email)}
+              className="w-full text-left p-2 rounded-md bg-white border border-blue-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="inline-block px-2 py-0.5 text-xs font-semibold rounded bg-blue-100 text-blue-800 mr-2">
+                    {account.role}
+                  </span>
+                  <span className="text-sm text-gray-700">{account.email}</span>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">{account.description}</p>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,81 @@
+version: '3.8'
+
+# =============================================================
+# KBase Development Environment
+# =============================================================
+# This compose file is designed for development and testing.
+# It creates a fresh database each time and seeds it with mock data.
+# 
+# Usage: docker-compose -f docker-compose.dev.yml up --build
+# =============================================================
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: kbase-db-dev
+    environment:
+      POSTGRES_DB: kbase
+      POSTGRES_USER: kbase_user
+      POSTGRES_PASSWORD: kbase_password
+    ports:
+      - "5432:5432"
+    volumes:
+      # Mount init scripts - these run in alphabetical order on first start
+      - ./database/01_init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./database/04_seed_comprehensive.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    networks:
+      - kbase-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kbase_user -d kbase"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: kbase-backend-dev
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kbase
+      - SPRING_DATASOURCE_USERNAME=kbase_user
+      - SPRING_DATASOURCE_PASSWORD=kbase_password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kbase-dev-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  # React Frontend (Nginx)
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: kbase-frontend-dev
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=/api
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - kbase-dev-network
+
+networks:
+  kbase-dev-network:
+    driver: bridge
