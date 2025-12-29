@@ -28,35 +28,28 @@ param(
 )
 
 # Colors for output
-function Write-ColorOutput($ForegroundColor, $Message) {
-    $fc = $host.UI.RawUI.ForegroundColor
-    $host.UI.RawUI.ForegroundColor = $ForegroundColor
-    Write-Output $Message
-    $host.UI.RawUI.ForegroundColor = $fc
-}
-
 function Write-Step($Message) {
-    Write-ColorOutput "Cyan" "`n==> $Message"
+    Write-Host "`n==> $Message" -ForegroundColor Cyan
 }
 
 function Write-Success($Message) {
-    Write-ColorOutput "Green" "[OK] $Message"
+    Write-Host "[OK] $Message" -ForegroundColor Green
 }
 
 function Write-Failure($Message) {
-    Write-ColorOutput "Red" "[ERROR] $Message"
+    Write-Host "[ERROR] $Message" -ForegroundColor Red
 }
 
 function Write-Info($Message) {
-    Write-ColorOutput "Yellow" "[INFO] $Message"
+    Write-Host "[INFO] $Message" -ForegroundColor Yellow
 }
 
 # Banner
 Write-Host ""
-Write-ColorOutput "Magenta" "╔═══════════════════════════════════════════════════════════╗"
-Write-ColorOutput "Magenta" "║                 KBase Development Environment              ║"
-Write-ColorOutput "Magenta" "║                      Starting Services                     ║"
-Write-ColorOutput "Magenta" "╚═══════════════════════════════════════════════════════════╝"
+Write-Host "=========================================================" -ForegroundColor Magenta
+Write-Host "           KBase Development Environment                 " -ForegroundColor Magenta
+Write-Host "                Starting Services                        " -ForegroundColor Magenta
+Write-Host "=========================================================" -ForegroundColor Magenta
 Write-Host ""
 
 # Get script directory and set working directory
@@ -184,30 +177,27 @@ if ($attempt -eq $maxAttempts) {
 
 # Print success message
 Write-Host ""
-Write-ColorOutput "Green" "╔═══════════════════════════════════════════════════════════╗"
-Write-ColorOutput "Green" "║              All services started successfully!            ║"
-Write-ColorOutput "Green" "╚═══════════════════════════════════════════════════════════╝"
+Write-Host "=========================================================" -ForegroundColor Green
+Write-Host "        All services started successfully!               " -ForegroundColor Green
+Write-Host "=========================================================" -ForegroundColor Green
 Write-Host ""
 
 Write-Host "Services running at:"
-Write-Host "  - Frontend:  " -NoNewline
-Write-ColorOutput "Cyan" "http://localhost:3000"
-Write-Host "  - Backend:   " -NoNewline
-Write-ColorOutput "Cyan" "http://localhost:8080"
-Write-Host "  - Database:  " -NoNewline
-Write-ColorOutput "Cyan" "localhost:5432"
+Write-Host "  - Frontend:  http://localhost:3000" -ForegroundColor Cyan
+Write-Host "  - Backend:   http://localhost:8080" -ForegroundColor Cyan
+Write-Host "  - Database:  localhost:5432" -ForegroundColor Cyan
 Write-Host ""
 
 Write-Host "Test Accounts (Password: " -NoNewline
-Write-ColorOutput "Yellow" "Password123!"
-Write-Host "):"
-Write-Host "  ┌──────────┬────────────────────────────────┬─────────────────────┐"
-Write-Host "  │ Role     │ Email                          │ Description         │"
-Write-Host "  ├──────────┼────────────────────────────────┼─────────────────────┤"
-Write-Host "  │ ADMIN    │ admin@kbase.dev                │ Full system access  │"
-Write-Host "  │ OWNER    │ john.smith@techcorp.com        │ Project owner       │"
-Write-Host "  │ USER     │ alice.taylor@techcorp.com      │ Regular user        │"
-Write-Host "  └──────────┴────────────────────────────────┴─────────────────────┘"
+Write-Host "Password123!" -ForegroundColor Yellow -NoNewline
+Write-Host ")"
+Write-Host "  +----------+--------------------------------+---------------------+"
+Write-Host "  | Role     | Email                          | Description         |"
+Write-Host "  +----------+--------------------------------+---------------------+"
+Write-Host "  | ADMIN    | admin@kbase.dev                | Full system access  |"
+Write-Host "  | OWNER    | john.smith@techcorp.com        | Project owner       |"
+Write-Host "  | USER     | alice.taylor@techcorp.com      | Regular user        |"
+Write-Host "  +----------+--------------------------------+---------------------+"
 Write-Host ""
 
 Write-Host "Useful commands:"

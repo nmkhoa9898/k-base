@@ -6,7 +6,7 @@
 -- 1. USERS Table
 -- ============================================================
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+    user_id BIGSERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     full_name VARCHAR(255) NOT NULL,
@@ -20,10 +20,10 @@ CREATE TABLE users (
 -- 2. PROJECTS Table
 -- ============================================================
 CREATE TABLE projects (
-    project_id SERIAL PRIMARY KEY,
+    project_id BIGSERIAL PRIMARY KEY,
     project_name VARCHAR(255) NOT NULL,
     description TEXT,
-    owner_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    owner_id BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     is_active BOOLEAN DEFAULT true,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -33,8 +33,8 @@ CREATE TABLE projects (
 -- 3. PROJECT_MEMBERS Table (composite primary key)
 -- ============================================================
 CREATE TABLE project_members (
-    project_id INTEGER NOT NULL REFERENCES projects(project_id) ON DELETE CASCADE,
-    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    project_id BIGINT NOT NULL REFERENCES projects(project_id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     role VARCHAR(50) DEFAULT 'MEMBER' CHECK (role IN ('OWNER', 'MEMBER')),
     is_active BOOLEAN DEFAULT true,
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -45,9 +45,9 @@ CREATE TABLE project_members (
 -- 4. DOCUMENTS Table
 -- ============================================================
 CREATE TABLE documents (
-    document_id SERIAL PRIMARY KEY,
-    project_id INTEGER NOT NULL REFERENCES projects(project_id) ON DELETE CASCADE,
-    uploaded_by INTEGER NOT NULL REFERENCES users(user_id),
+    document_id BIGSERIAL PRIMARY KEY,
+    project_id BIGINT NOT NULL REFERENCES projects(project_id) ON DELETE CASCADE,
+    uploaded_by BIGINT NOT NULL REFERENCES users(user_id),
     title VARCHAR(255),
     file_name VARCHAR(255) NOT NULL,
     file_type VARCHAR(50) NOT NULL,
