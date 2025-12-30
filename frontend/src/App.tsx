@@ -10,6 +10,7 @@ import {
   ProjectListPage,
   CreateProjectPage,
   ProjectDetailPage,
+  AddMemberPage,
   DocumentListPage,
   UploadDocumentPage,
   DocumentDetailPage,
@@ -97,6 +98,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/projects" element={<ProjectListPage />} />
         <Route path="/projects/new" element={<CreateProjectPage />} />
         <Route path="/projects/:id" element={<ProjectDetailPage />} />
+        <Route path="/projects/:id/members/add" element={<AddMemberPage />} />
         <Route path="/projects/:projectId/upload" element={<UploadDocumentPage />} />
         
         {/* Documents */}

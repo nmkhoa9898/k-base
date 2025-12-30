@@ -10,8 +10,6 @@ import {
   FileText, 
   UserCheck, 
   RefreshCw,
-  ChevronDown,
-  ChevronRight,
   Shield
 } from 'lucide-react';
 
@@ -24,7 +22,6 @@ const DatabasePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState<TabType>('overview');
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['stats']));
 
   // Check if user is admin
   useEffect(() => {
@@ -48,16 +45,6 @@ const DatabasePage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const toggleSection = (section: string) => {
-    const newExpanded = new Set(expandedSections);
-    if (newExpanded.has(section)) {
-      newExpanded.delete(section);
-    } else {
-      newExpanded.add(section);
-    }
-    setExpandedSections(newExpanded);
   };
 
   const formatDate = (dateString: string) => {

@@ -56,7 +56,7 @@ const DocumentListPage: React.FC = () => {
     }
   };
 
-  const handleDownload = async (doc: Document) => {
+  const handleDownload = async (_doc: Document) => {
     // Note: Download endpoint not available in backend yet
     setError('Document download is not yet implemented');
   };
