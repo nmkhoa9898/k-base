@@ -1,117 +1,195 @@
-# KBase - Knowledge Base System
+# KBase - Knowledge Base Management System
 
-A comprehensive full-stack knowledge base application built with Spring Boot (backend), React (frontend), and PostgreSQL (database).
+A full-stack knowledge base application for managing projects, documents, and team collaboration. Built with Spring Boot, React, and PostgreSQL.
 
-## Project Structure
+## 🚀 Quick Start
 
-- `backend/` - Spring Boot REST API
-- `frontend/` - React web application
-- `database/` - PostgreSQL schemas and migrations
-- `docs/` - Project documentation and requirements
-- `docker/` - Docker configurations
-- `scripts/` - Build and deployment scripts
+### Prerequisites
+- Java 21 (OpenJDK)
+- Node.js 18+ and npm
+- PostgreSQL 15+ (or Docker)
+- Maven
 
-## Getting Started
+### Development Setup
 
-See `docs/learning_roadmap.md` for detailed setup instructions.
+1. **Start the database** (using Docker):
+   ```powershell
+   docker compose -f docker/docker-compose.db.yml up -d
+   ```
 
-## Backend — Run locally
+2. **Start the backend**:
+   ```powershell
+   cd backend
+   mvn spring-boot:run -Dspring-boot.run.profiles=local
+   ```
 
-Prerequisites:
-- Java 21 (OpenJDK) installed and `JAVA_HOME` set
-- Maven installed (`mvn` available)
-- (Optional) Docker, if running PostgreSQL with compose
+3. **Start the frontend**:
+   ```powershell
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-Build and run (packaged jar):
+4. **Access the application**:
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:8080/api
+   - API Health Check: http://localhost:8080/api/ping
 
-```powershell
-mvn -f backend -DskipTests package
-Start-Process -FilePath 'java' -ArgumentList '-jar','backend\\target\\kbase-backend-0.0.1-SNAPSHOT.jar' -NoNewWindow -PassThru
+### Test Accounts
+| Role  | Email                        | Password      |
+|-------|------------------------------|---------------|
+| Admin | admin@kbase.dev              | Password123!  |
+| Owner | john.smith@techcorp.com      | Password123!  |
+| User  | alice.taylor@techcorp.com    | Password123!  |
+
+## 📁 Project Structure
+
+```
+KBase/
+├── backend/          # Spring Boot REST API
+│   └── src/main/java/com/example/kbase_backend/
+│       ├── config/       # Security & app configuration
+│       ├── controller/   # REST endpoints
+│       ├── dto/          # Data transfer objects
+│       ├── entity/       # JPA entities
+│       ├── exception/    # Custom exceptions & handlers
+│       ├── repository/   # Data access layer
+│       ├── security/     # JWT authentication
+│       └── service/      # Business logic
+├── frontend/         # React + TypeScript application
+│   └── src/
+│       ├── components/   # Reusable UI components
+│       ├── contexts/     # React contexts (Auth)
+│       ├── pages/        # Page components
+│       ├── services/     # API client services
+│       ├── types/        # TypeScript type definitions
+│       └── utils/        # Utility functions
+├── docker/           # Docker Compose configurations
+├── docs/             # Project documentation
+└── scripts/          # Development & deployment scripts
 ```
 
-Run in development (Spring Boot run):
+## ✨ Features
 
-```powershell
-mvn -f backend spring-boot:run
+### Authentication & Authorization
+- JWT-based authentication
+- Role-based access control (Admin, Owner, User)
+- Secure password handling with BCrypt
+
+### Project Management
+- Create and manage projects
+- Add/remove team members
+- Project search functionality
+- Owner and member role assignments
+
+### Document Management
+- Upload documents to projects
+- Document metadata and descriptions
+- File size and type tracking
+- Project-scoped document organization
+
+### Admin Features
+- Database overview dashboard
+- User management
+- System-wide statistics
+
+### User Interface
+- Responsive dashboard
+- Clean, modern UI with Tailwind CSS
+- Real-time form validation
+- Loading states and error handling
+
+## 🛠️ Technology Stack
+
+### Backend
+- **Framework**: Spring Boot 3.x
+- **Language**: Java 21
+- **Security**: Spring Security + JWT
+- **Database**: PostgreSQL with JPA/Hibernate
+- **Build**: Maven
+
+### Frontend
+- **Framework**: React 19
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **HTTP Client**: Axios
+- **Routing**: React Router v7
+- **Icons**: Lucide React
+
+### Infrastructure
+- **Database**: PostgreSQL 15
+- **Containerization**: Docker & Docker Compose
+- **Reverse Proxy**: Nginx (for Docker deployment)
+
+## 📡 API Endpoints
+
+### Authentication
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
+
+### Users
+- `GET /api/users` - List users (paginated)
+- `GET /api/users/{id}` - Get user by ID
+- `POST /api/users` - Create user
+- `PUT /api/users/{id}` - Update user
+- `DELETE /api/users/{id}` - Delete user
+
+### Projects
+- `GET /api/projects` - List projects (paginated)
+- `GET /api/projects/my` - Get current user's projects
+- `GET /api/projects/search?q=` - Search projects
+- `GET /api/projects/{id}` - Get project by ID
+- `POST /api/projects` - Create project
+- `PUT /api/projects/{id}` - Update project
+- `DELETE /api/projects/{id}` - Delete project
+- `GET /api/projects/{id}/members` - List project members
+- `POST /api/projects/{id}/members` - Add member
+- `DELETE /api/projects/{id}/members/{userId}` - Remove member
+
+### Documents
+- `GET /api/documents` - List documents (paginated)
+- `GET /api/documents/{id}` - Get document by ID
+- `GET /api/documents/project/{projectId}` - Get project documents
+- `POST /api/documents` - Upload document (multipart)
+- `PUT /api/documents/{id}` - Update document
+- `DELETE /api/documents/{id}` - Delete document
+
+### Admin
+- `GET /api/admin/database-overview` - Database statistics (Admin only)
+
+## 🔧 Configuration
+
+### Backend Profiles
+- `default` - H2 in-memory database
+- `local` - Local PostgreSQL connection
+
+### Environment Variables
+```bash
+# Database
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/kbase
+SPRING_DATASOURCE_USERNAME=kbase_user
+SPRING_DATASOURCE_PASSWORD=kbase_password
+
+# JWT
+JWT_SECRET=your-secret-key
+JWT_EXPIRATION=86400000
 ```
 
-Test the ping endpoint:
+## 🔒 Security Notes
 
-```powershell
-Invoke-RestMethod 'http://localhost:8080/api/ping'
-# Expected output: pong
-```
+- Never commit real passwords to source control
+- Use environment variables or `.env` files (excluded from git)
+- JWT tokens expire after 24 hours by default
+- All passwords are hashed with BCrypt
 
-Stop the running backend:
+## 📚 Documentation
 
-```powershell
-Get-Process -Name java | Stop-Process -Force
-# Or stop the specific process ID that is running the jar
-```
+- [Project Description](docs/project_description.md)
+- [Backend Documentation](docs/project_backend.md)
+- [Database Schema](docs/project_database.md)
+- [Learning Roadmap](docs/learning_roadmap.md)
 
-Notes:
-- By default the project includes an in-memory H2 database for development; to use PostgreSQL, update `backend/src/main/resources/application.yaml` with your `spring.datasource.*` settings or start Postgres via `docker compose` and update the settings accordingly.
-- If Docker Compose is used, run `docker compose -f docker/docker-compose.yml up -d` to start services and `docker compose -f docker/docker-compose.yml down` to stop them.
+## 📄 License
 
-### Local Postgres (recommended for now)
-
-If you prefer running Postgres locally (no Docker), follow these steps:
-
-- Install PostgreSQL (EnterpriseDB installer or `choco install postgresql`).
-- Initialize DB and user once (idempotent script included):
-
-```powershell
-# optional: set superuser password in env to avoid prompts
-$env:PGPASSWORD='your_postgres_superuser_password'
-
-# run the idempotent initializer (adds role + DB if missing)
-.\scripts\init_db.ps1
-
-# or with explicit params:
-.\scripts\init_db.ps1 -PgSuperUserPassword 'your_postgres_superuser_password' -PsqlBinPath 'C:\Program Files\PostgreSQL\16\bin'
-```
-
-- Connect with pgAdmin or `psql` using:
-
-	- Host: `localhost`
-	- Port: `5432`
-	- Database: `kbase` (or `postgres` for maintenance)
-	- Username: `kbase_user` (or `postgres` superuser)
-	- Password: the password you set / `kbase_password` if using defaults above
-
-### Run backend with local Postgres
-
-The project includes an `application-local.yaml` profile. Start the app with that profile so it uses your local Postgres settings:
-
-```powershell
-# run with Maven
-mvn -f backend -DskipTests -Dspring-boot.run.profiles=local spring-boot:run
-
-# or run the jar with the profile active
-Start-Process -FilePath 'java' -ArgumentList '-jar','backend\target\kbase-backend-0.0.1-SNAPSHOT.jar','--spring.profiles.active=local' -NoNewWindow -PassThru
-```
-
-Verify the ping endpoint:
-
-```powershell
-Invoke-RestMethod 'http://localhost:8080/api/ping'
-# expect: pong
-```
-
-Security note: avoid committing real passwords into source. Use environment variables, a `.env` file excluded from git, or a secrets manager in CI.
-
-## Features
-
-- User authentication and authorization
-- Project and document management
-- File upload and storage
-- Search functionality
-- Optional AI-powered features
-
-## Technologies
-
-- Backend: Java 17/21, Spring Boot 3.x
-- Frontend: React, TypeScript
-- Database: PostgreSQL
-- Containerization: Docker
-- IDE: VS Code (recommended)
+This project is for educational purposes.
