@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminService, DatabaseOverview, DatabaseStats } from '@/services/adminService';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts';
 import { Card, CardHeader, CardTitle, CardContent, LoadingSpinner, Alert, Button } from '@/components/ui';
+import { formatFileSize, formatDate } from '@/utils';
 import { 
   Database, 
   Users, 
@@ -45,16 +46,6 @@ const DatabasePage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   if (user?.role !== 'ADMIN') {

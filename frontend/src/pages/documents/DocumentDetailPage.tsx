@@ -4,6 +4,7 @@ import { documentService } from '@/services';
 import { Document } from '@/types';
 import { useAuth } from '@/contexts';
 import { Card, CardContent, Button, LoadingSpinner, Alert, Modal } from '@/components/ui';
+import { formatFileSize } from '@/utils';
 import { FileText, Download, Trash2, ArrowLeft, Calendar, User, Folder } from 'lucide-react';
 
 const DocumentDetailPage: React.FC = () => {
@@ -54,12 +55,6 @@ const DocumentDetailPage: React.FC = () => {
     } finally {
       setIsDeleting(false);
     }
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   const canDelete = document && user && document.uploadedById === user.userId;

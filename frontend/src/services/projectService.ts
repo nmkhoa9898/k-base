@@ -7,28 +7,8 @@ import {
   AddMemberRequest,
   ApiResponse, 
   PagedResponse,
-  PageMetadata
 } from '@/types';
-
-// Backend response type for paginated list
-interface PagedListResponse<T> {
-  status: number;
-  message: string;
-  result: T[];
-  metadata: PageMetadata;
-  timestamp: string;
-}
-
-// Helper function to transform backend response to PagedResponse format
-function toPagedResponse<T>(response: PagedListResponse<T>): PagedResponse<T> {
-  return {
-    status: response.status,
-    message: response.message,
-    data: response.result,
-    page: response.metadata,
-    timestamp: response.timestamp,
-  };
-}
+import { PagedListResponse, toPagedResponse } from '@/utils';
 
 export const projectService = {
   getAll: async (page = 0, size = 10): Promise<PagedResponse<Project>> => {
@@ -50,7 +30,6 @@ export const projectService = {
     return toPagedResponse(response.data);
   },
 
-  // Backend uses 'q' parameter, not 'query'
   search: async (query: string, page = 0, size = 10): Promise<PagedResponse<Project>> => {
     const response = await api.get<PagedListResponse<Project>>('/projects/search', {
       params: { q: query, page, size },
@@ -86,8 +65,4 @@ export const projectService = {
   removeMember: async (projectId: number, userId: number): Promise<void> => {
     await api.delete(`/projects/${projectId}/members/${userId}`);
   },
-
-  // Note: updateMemberRole endpoint doesn't exist in backend - removed
 };
-
-export default projectService;

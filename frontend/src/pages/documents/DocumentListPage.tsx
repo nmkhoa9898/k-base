@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { documentService } from '@/services';
 import { Document } from '@/types';
 import { Card, CardContent, LoadingSpinner, Alert, Button, Input } from '@/components/ui';
+import { formatFileSize } from '@/utils';
 import { FileText, Search, Download, Eye } from 'lucide-react';
 
 const DocumentListPage: React.FC = () => {
@@ -62,14 +63,7 @@ const DocumentListPage: React.FC = () => {
   };
 
   const getFileIcon = (_fileType: string) => {
-    // Could expand this to show different icons based on file type
     return <FileText className="h-5 w-5 text-gray-400" />;
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   if (isLoading && documents.length === 0) {

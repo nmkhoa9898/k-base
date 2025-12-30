@@ -143,9 +143,3 @@ export interface PageMetadata {
   first: boolean;
   last: boolean;
 }
-
-// Form validation types
-export interface FormError {
-  field: string;
-  message: string;
-}

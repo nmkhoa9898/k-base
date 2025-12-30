@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { documentService } from '@/services';
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Alert } from '@/components/ui';
+import { formatFileSize } from '@/utils';
 import { Upload, X, FileText, ArrowLeft } from 'lucide-react';
 
 const UploadDocumentPage: React.FC = () => {
@@ -94,12 +95,6 @@ const UploadDocumentPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   return (

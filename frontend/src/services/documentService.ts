@@ -5,28 +5,8 @@ import {
   UpdateDocumentRequest, 
   ApiResponse, 
   PagedResponse,
-  PageMetadata
 } from '@/types';
-
-// Backend response type for paginated list
-interface PagedListResponse<T> {
-  status: number;
-  message: string;
-  result: T[];
-  metadata: PageMetadata;
-  timestamp: string;
-}
-
-// Helper function to transform backend response to PagedResponse format
-function toPagedResponse<T>(response: PagedListResponse<T>): PagedResponse<T> {
-  return {
-    status: response.status,
-    message: response.message,
-    data: response.result,
-    page: response.metadata,
-    timestamp: response.timestamp,
-  };
-}
+import { PagedListResponse, toPagedResponse } from '@/utils';
 
 export const documentService = {
   getAll: async (page = 0, size = 10): Promise<PagedResponse<Document>> => {
@@ -48,7 +28,6 @@ export const documentService = {
     return toPagedResponse(response.data);
   },
 
-  // Backend has /documents/project/{projectId}/search with 'q' param
   searchInProject: async (projectId: number, query: string, page = 0, size = 10): Promise<PagedResponse<Document>> => {
     const response = await api.get<PagedListResponse<Document>>(`/documents/project/${projectId}/search`, {
       params: { q: query, page, size },
@@ -56,7 +35,6 @@ export const documentService = {
     return toPagedResponse(response.data);
   },
 
-  // Backend uses POST /documents (not /documents/upload)
   create: async (data: CreateDocumentRequest): Promise<Document> => {
     const formData = new FormData();
     formData.append('title', data.title);
@@ -82,8 +60,4 @@ export const documentService = {
   delete: async (id: number): Promise<void> => {
     await api.delete(`/documents/${id}`);
   },
-
-  // Note: download endpoint doesn't exist in backend yet
 };
-
-export default documentService;

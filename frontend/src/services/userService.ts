@@ -5,31 +5,15 @@ import {
   UpdateUserRequest, 
   ApiResponse, 
   PagedResponse,
-  PageMetadata
 } from '@/types';
-
-// Backend response type for paginated user list
-interface UserListResponse {
-  status: number;
-  message: string;
-  result: User[];
-  metadata: PageMetadata;
-  timestamp: string;
-}
+import { PagedListResponse, toPagedResponse } from '@/utils';
 
 export const userService = {
   getAll: async (page = 0, size = 10): Promise<PagedResponse<User>> => {
-    const response = await api.get<UserListResponse>('/users', {
+    const response = await api.get<PagedListResponse<User>>('/users', {
       params: { page, size },
     });
-    // Transform backend response to PagedResponse format
-    return {
-      status: response.data.status,
-      message: response.data.message,
-      data: response.data.result,
-      page: response.data.metadata,
-      timestamp: response.data.timestamp,
-    };
+    return toPagedResponse(response.data);
   },
 
   getById: async (id: number): Promise<User> => {
@@ -52,8 +36,4 @@ export const userService = {
   delete: async (id: number): Promise<void> => {
     await api.delete(`/users/${id}`);
   },
-
-  // Note: changePassword endpoint doesn't exist in backend - removed
 };
-
-export default userService;
