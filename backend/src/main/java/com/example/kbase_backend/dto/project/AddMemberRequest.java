@@ -23,5 +23,6 @@ public class AddMemberRequest {
     private Long userId;
     
     @Schema(description = "Role of the member (OWNER or MEMBER)", example = "MEMBER", defaultValue = "MEMBER")
+    @Builder.Default
     private MemberRole role = MemberRole.MEMBER;
 }

@@ -36,6 +36,7 @@ public class RegisterRequest {
     @Schema(description = "User full name", example = "John Doe", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fullName;
     
+    @Builder.Default
     @Schema(description = "User role (defaults to USER)", example = "USER", defaultValue = "USER")
     private UserRole role = UserRole.USER;
 }
