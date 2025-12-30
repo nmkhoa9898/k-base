@@ -61,4 +61,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
      * Check if a project with the given name exists for an owner.
      */
     boolean existsByProjectNameAndOwnerUserId(String projectName, Long ownerId);
+    
+    /**
+     * Count projects by active status.
+     */
+    long countByIsActive(Boolean isActive);
 }

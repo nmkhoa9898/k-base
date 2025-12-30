@@ -15,6 +15,7 @@ import {
   DocumentDetailPage,
   UserListPage,
   SettingsPage,
+  DatabasePage,
   NotFoundPage,
 } from '@/pages';
 
@@ -32,6 +33,29 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+// Admin-only route wrapper
+const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user?.role !== 'ADMIN') {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;
@@ -81,6 +105,9 @@ const AppRoutes: React.FC = () => {
         
         {/* Users (admin only) */}
         <Route path="/users" element={<UserListPage />} />
+        
+        {/* Admin only */}
+        <Route path="/admin/database" element={<AdminRoute><DatabasePage /></AdminRoute>} />
         
         {/* Settings */}
         <Route path="/settings" element={<SettingsPage />} />

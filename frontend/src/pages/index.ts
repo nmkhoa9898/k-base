@@ -7,4 +7,5 @@ export { ProjectListPage, CreateProjectPage, ProjectDetailPage } from './project
 export { DocumentListPage, UploadDocumentPage, DocumentDetailPage } from './documents';
 export { UserListPage } from './users';
 export { SettingsPage } from './settings';
+export { DatabasePage } from './admin';
 export { default as NotFoundPage } from './NotFoundPage';

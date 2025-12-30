@@ -7,6 +7,7 @@ import {
   FileText,
   Users,
   Settings,
+  Database,
   X,
 } from 'lucide-react';
 
@@ -27,6 +28,7 @@ const navigation: NavItem[] = [
   { name: 'Projects', href: '/projects', icon: FolderKanban },
   { name: 'Documents', href: '/documents', icon: FileText },
   { name: 'Users', href: '/users', icon: Users, roles: ['ADMIN'] },
+  { name: 'Database', href: '/admin/database', icon: Database, roles: ['ADMIN'] },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 

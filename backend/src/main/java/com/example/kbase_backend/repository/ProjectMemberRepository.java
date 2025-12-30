@@ -53,4 +53,9 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Pr
      */
     @Query("SELECT COUNT(pm) FROM ProjectMember pm WHERE pm.project.projectId = :projectId AND pm.isActive = true")
     long countActiveMembers(@Param("projectId") Long projectId);
+    
+    /**
+     * Count members in a project (for admin).
+     */
+    int countByProjectProjectId(Long projectId);
 }

@@ -56,6 +56,16 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     long countByProjectId(@Param("projectId") Long projectId);
     
     /**
+     * Count documents in a project (for admin).
+     */
+    int countByProjectProjectId(Long projectId);
+    
+    /**
+     * Count documents by active status.
+     */
+    long countByIsActive(Boolean isActive);
+    
+    /**
      * Calculate total file size in a project.
      */
     @Query("SELECT COALESCE(SUM(d.fileSize), 0) FROM Document d WHERE d.project.projectId = :projectId AND d.isActive = true")
